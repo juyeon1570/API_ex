@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 불러오기</title>
+    <style>
+        h1{
+            text-align: center;
+        }
+        ul{
+            list-style-type: none;
+            font-size: 20px;
+        }
+        li{
+            padding: 10px;
+        }
+        p{
+            margin-left: 30px;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+    </style>
+    <script>
+
+        // for(let i=0;i<10;i++){
+        //     fetch('https://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2?serviceKey=5AjFDZSQeQd5FOUKT%2FMAmQvoJurdQjeudMIn59NiIWBhxEeZy39y3PlF7xAwkHzK3GU853W6TfYfW1jtjaxOYg%3D%3D&pageNo=1').then((response)=>{
+        //         return response.json();
+        //     })
+        //     .then((data)=>{
+        //         let d = document.createElement('p');
+        //         d.innerHTML = `${i}: {
+        //             alarm_lvl: ${data.data[i].alarm_lvl},
+        //             continent_cd: ${data.data[i].continent_cd},
+        //             continent_nm: ${data.data[i].continent_nm},
+        //             country_eng_nm: ${data.data[i].country_eng_nm},
+        //             country_iso_alp2: ${data.data[i].country_iso_alp2},
+        //             country_nm: ${data.data[i].country_nm},
+        //             region_ty: ${data.data[i].region_ty},
+        //             remark: ${data.data[i].remark},
+        //             written_dt: ${data.data[i].written_dt}
+        //         }`;
+        //         document.querySelector('#content').appendChild(d);
+        //     })
+        // }
+        function fetchAPI(){
+            return fetch('https://apis.data.go.kr/1262000/TravelAlarmService2/getTravelAlarmList2?serviceKey=5AjFDZSQeQd5FOUKT%2FMAmQvoJurdQjeudMIn59NiIWBhxEeZy39y3PlF7xAwkHzK3GU853W6TfYfW1jtjaxOYg%3D%3D&pageNo=1')
+            .then((response) => response.json())
+            .then((data) => data);
+        }
+
+        fetchAPI().then((datas) => {
+            console.log(datas.data);
+            showDatas(datas.data);
+        });
+
+        function showDatas(datas){
+            const ulElement = document.querySelector('#dataseries');
+            ulElement.innerHTML = datas.map((data) => setLiElement(data)).join('');
+        }
+        
+        function setLiElement(data){
+            return `<li> {
+                    <p>alarm_lvl: ${data.alarm_lvl},</p>
+                    <p>continent_cd: ${data.continent_cd},</p>
+                    <p>continent_nm: ${data.continent_nm},</p>
+                    <p>country_eng_nm: ${data.country_eng_nm},</p>
+                    <p>country_iso_alp2: ${data.country_iso_alp2},</p>
+                    <p>country_nm: ${data.country_nm},</p>
+                    <p>region_ty: ${data.region_ty},</p>
+                    <p>remark: ${data.remark},</p>
+                    <p>written_dt: ${data.written_dt}</p>
+                } </li>`;
+        }
+
+    </script>
+</head>
+<body>
+    <h1>국가, 지역별 여행 경보</h1>
+    <!-- <div id="content"></div> -->
+    <ul id="dataseries"></ul>
+</body>
+</html>
